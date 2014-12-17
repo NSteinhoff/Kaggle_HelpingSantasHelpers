@@ -7,14 +7,14 @@ namespace Kaggle_HelpingSantasHelpers
 		private int _id;
 		private DateTime _arrivalTime;
 		private int _durationMinutes;
-
-		public ToyOrder (int id, DateTime arrivalTime, int durationMinutes)
-		{
-			_id = id;
-			_arrivalTime = arrivalTime;
-			_durationMinutes = durationMinutes;
-		}
-
+		//
+		//		public ToyOrder (int id, DateTime arrivalTime, int durationMinutes)
+		//		{
+		//			_id = id;
+		//			_arrivalTime = arrivalTime;
+		//			_durationMinutes = durationMinutes;
+		//		}
+		//
 		public ToyOrder (string orderString)
 		{
 			string[] orderComponents = orderString.Split (',');
@@ -58,8 +58,6 @@ namespace Kaggle_HelpingSantasHelpers
 		public bool ExceedWorkingDay {
 			get { return ((DurationMinutes / 4) > (10 * 60)); }
 		}
-
-
 	}
 }
 

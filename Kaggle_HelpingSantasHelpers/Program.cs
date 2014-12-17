@@ -6,22 +6,20 @@ namespace Kaggle_HelpingSantasHelpers
 	{
 		public static void Main (string[] args)
 		{
-			Console.WriteLine ("Start of program.");
+			Console.WriteLine ("Start of program. Press any key....");
+			Console.ReadKey ();
 
-			DataReader.OpenReadStream (@"/Users/nikosteinhoff/Data/Kaggle_HelpingSantasHelpers/toys_rev2.csv");
+			DataReader.OpenReadStream (DataReader.filePath);
 
 			ElfCommander.HireElves (10);
 
-
-			// TODO 
+			// TODO transfer Testing() functionality to testing suite!
 			DataReader.Testing ();
 
 			DataReader.CloseReadStream ();
 
 			Console.WriteLine ("End of program.");
 		}
-			
-	
 	}
 }
 

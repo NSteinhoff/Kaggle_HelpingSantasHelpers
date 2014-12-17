@@ -6,18 +6,13 @@ namespace Kaggle_HelpingSantasHelpers
 {
 	public static class DataReader
 	{
-		#region Fields
-
+		public const string filePath = @"/Volumes/DATA/Kaggle/HelpingSantasHelpers/toys_rev2.csv";
 		private static FileStream inputFile;
-
 		private static StreamReader reader;
-
 		private static Queue<string> bufferedLine;
-
-		#endregion
-
-
-		#region Public methods
+		private static bool hasReadHeader = false;
+		private static int numberOfLinesRead = 0;
+		private static const int maxLinesToRead = 100000;
 
 		public static void Testing ()
 		{
@@ -28,33 +23,27 @@ namespace Kaggle_HelpingSantasHelpers
 			ToyOrderBook.AddNewOrdersToOrderBook (newOrders);
 		}
 
-		public static bool OpenReadStream (string path)
+		public static bool OpenReadStream (string path = filePath)
 		{
 			try {
 				inputFile = File.OpenRead (path);
-
 				reader = new StreamReader (inputFile);
-
 				bufferedLine = new Queue<string> ();
-
+				numberOfLinesRead = 0;
 				Console.WriteLine (String.Format ("Header - {0}", ReadHeaderLine ()));
 
-			} catch (Exception ex) {
+			} catch (FileNotFoundException ex) {
 				Console.WriteLine (ex.Message);
-
 				return false;
 			}
-				
-
 			return true;
 		}
-
 
 		public static void CloseReadStream ()
 		{
 			try {
-				reader.Close ();
-				
+				reader.Close ();	
+				hasReadHeader = false;
 			} catch (Exception ex) {
 				Console.WriteLine (ex.Message);
 			}
@@ -64,23 +53,19 @@ namespace Kaggle_HelpingSantasHelpers
 		{
 			List<string> lines = new List<string> ();
 
-			while (!reader.EndOfStream) {
-
+			while (!reader.EndOfStream && numberOfLinesRead <= maxLinesToRead) {
 				if (!IsWithinNumberOfDays (currentDate, numberOfDaysAhead)) {
 					break;
 				}
-
 				string line = ReadNextLine ();
-
 				lines.Add (line);
 			}
-
 			PrintLinesSummary (lines);
 
 			return lines;
 		}
 
-		public static List<string> ReadLinesFromStream (int linesToRead = 10000)
+		public static List<string> ReadLinesFromStream (int linesToRead = 100000)
 		{
 			List<string> lines = new List<string> ();
 
@@ -93,16 +78,11 @@ namespace Kaggle_HelpingSantasHelpers
 					break;
 				}
 			}
-
 			PrintLinesSummary (lines);
 
 			return lines;
 		}
 
-		#endregion
-
-
-		#region Private methods
 
 		private static string ReadNextLine ()
 		{
@@ -110,11 +90,10 @@ namespace Kaggle_HelpingSantasHelpers
 
 			if (bufferedLine.Count > 0) {
 				line = bufferedLine.Dequeue ();
-
 			} else if (!reader.EndOfStream) {
 				line = reader.ReadLine ();
-
 			}
+			numberOfLinesRead++;
 
 			return line;
 		}
@@ -125,10 +104,8 @@ namespace Kaggle_HelpingSantasHelpers
 
 			if (bufferedLine.Count > 0) {
 				line = bufferedLine.Peek ();
-
 			} else if (!reader.EndOfStream) {
 				line = reader.ReadLine ();
-
 				bufferedLine.Enqueue (line);
 			}
 
@@ -137,9 +114,13 @@ namespace Kaggle_HelpingSantasHelpers
 
 		private static string ReadHeaderLine ()
 		{
-			string header = reader.ReadLine ();
-
-			return header;
+			if (!hasReadHeader) {
+				string header = reader.ReadLine ();
+				hasReadHeader = true;
+				return header;
+			} else {
+				return "";
+			}
 		}
 
 		private static void PrintLinesSummary (List<string> lines)
@@ -148,6 +129,7 @@ namespace Kaggle_HelpingSantasHelpers
 			int linesCount = lines.Count;
 			int firstLines = 3;
 			int lastLines = 3;
+
 			// First lines
 			if (linesCount >= firstLines) {
 				for (int i = 0; i < firstLines; i++) {
@@ -158,12 +140,14 @@ namespace Kaggle_HelpingSantasHelpers
 					Console.WriteLine (lines [i]);
 				}
 			}
+
 			// Dots
 			if (linesCount >= firstLines + lastLines + 1) {
 				for (int i = 0; i < 3; i++) {
 					Console.WriteLine ("   .");
 				}
 			}
+
 			// Last lines
 			if (linesCount >= firstLines + lastLines) {
 				for (int i = linesCount - lastLines; i < linesCount; i++) {
@@ -177,29 +161,28 @@ namespace Kaggle_HelpingSantasHelpers
 					
 			Console.WriteLine ("---");
 			Console.WriteLine (String.Format ("N = {0} ", linesCount));
-
-
 		}
 
 		private static bool IsWithinNumberOfDays (DateTime currentDate, int numberOfDaysAhead)
 		{
+			bool isWithinNumberOfDays = false;
 			string nextLine = PeekNextLine ();
-
 			DateTime dateNextLine = ParseDateFromLine (nextLine);
-
 			TimeSpan timeBetween = dateNextLine - currentDate;
 
 			if (timeBetween.TotalDays < numberOfDaysAhead) {
-				return true;
+				isWithinNumberOfDays = true;
+			} else {
+				isWithinNumberOfDays = false;
 			}
 
-			return false;
+			return isWithinNumberOfDays;
 		}
 
 		private static DateTime ParseDateFromLine (string line)
 		{
+			DateTime date = new DateTime ();
 			string[] values = line.Split (',');
-
 			string[] dateComponents = values [1].Split (' ');
 
 			try {
@@ -210,18 +193,14 @@ namespace Kaggle_HelpingSantasHelpers
 				int minute = Convert.ToInt32 (dateComponents [4]);
 				int second = 0;
 
-				DateTime date = new DateTime (year, month, day, hour, minute, second);
+				date = new DateTime (year, month, day, hour, minute, second);
 
-				return date;
-				
 			} catch (Exception ex) {
 				Console.WriteLine (ex.Message);
-
-				return new DateTime ();
 			}
-		}
 
-		#endregion
+			return date;
+		}
 	}
 }
 

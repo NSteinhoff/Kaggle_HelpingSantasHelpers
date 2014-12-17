@@ -8,16 +8,12 @@ namespace Kaggle_HelpingSantasHelpers
 	{
 		private int _id;
 		private double _productivity;
-
-		private ToyOrder _currentToy;
 		private DateTime _workingTill;
 
 		public Elf (int id)
 		{
 			_id = id;
 			_productivity = 1;
-
-			_currentToy = null;
 			_workingTill = new DateTime (2014, 1, 1, 0, 0, 0);
 		}
 
@@ -27,10 +23,6 @@ namespace Kaggle_HelpingSantasHelpers
 
 		public double Productivity {
 			get{ return _productivity; }
-		}
-
-		public ToyOrder CurrentOrder {
-			get { return _currentToy; }
 		}
 
 		public DateTime NextAvailable {
@@ -94,8 +86,6 @@ namespace Kaggle_HelpingSantasHelpers
 
 			return nextToy;
 		}
-
-
 	}
 }
 

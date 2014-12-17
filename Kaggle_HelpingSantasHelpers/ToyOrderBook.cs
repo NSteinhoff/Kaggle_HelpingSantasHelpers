@@ -14,9 +14,7 @@ namespace Kaggle_HelpingSantasHelpers
 			int ordersAdded = 0;
 
 			foreach (string order in incomingOrders) {
-
 				ToyOrder newOrder = new ToyOrder (order);
-
 				if (newOrder.ExceedWorkingDay) {
 					fullDayOrders.Add (newOrder);
 				} else {
@@ -24,7 +22,6 @@ namespace Kaggle_HelpingSantasHelpers
 				}
 				ordersAdded++;
 			}
-
 			return ordersAdded;
 		}
 

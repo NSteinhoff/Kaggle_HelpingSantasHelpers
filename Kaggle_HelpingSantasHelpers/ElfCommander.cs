@@ -13,17 +13,15 @@ namespace Kaggle_HelpingSantasHelpers
 			for (int i = 0; i < numberOfElves; i++) {
 				_elves.Add (new Elf (_elves.Count + 1));
 			}
-			// TODO 
+
 			return _elves.Count;
 		}
 
 		public static List<Elf> Elves {
 			get {
-				return _elves.OrderBy (x => x.EffectiveNextAvailable).ToList ();
+				return _elves.OrderBy (x => x.NextAvailable).ToList ();
 			}
 		}
-
-
 	}
 }
 
