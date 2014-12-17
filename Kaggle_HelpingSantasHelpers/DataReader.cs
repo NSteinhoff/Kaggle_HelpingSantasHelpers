@@ -21,7 +21,9 @@ namespace Kaggle_HelpingSantasHelpers
 
 		public static void Testing ()
 		{
-			List<string> newOrders = ReadNewIncomingOrdersFromStream (new DateTime (2014, 1, 1, 0, 0, 0));
+			DateTime currentDate = new DateTime (2014, 1, 1, 0, 0, 0);
+
+			List<string> newOrders = ReadNewIncomingOrdersFromStream (currentDate);
 
 			ToyOrderBook.AddNewOrdersToOrderBook (newOrders);
 		}

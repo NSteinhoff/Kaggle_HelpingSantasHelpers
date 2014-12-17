@@ -3,11 +3,10 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="Kaggle_HelpingSantasHelpers/Program.cs">
     <Files>
       <File FileName="Kaggle_HelpingSantasHelpers/Program.cs" Line="1" Column="1" />
-      <File FileName="Kaggle_HelpingSantasHelpers/DataReader.cs" Line="45" Column="45" />
       <File FileName="Kaggle_HelpingSantasHelpers/ToyOrderBook.cs" Line="1" Column="1" />
       <File FileName="Kaggle_HelpingSantasHelpers/ToyOrder.cs" Line="1" Column="1" />
       <File FileName="Kaggle_HelpingSantasHelpers/Elf.cs" Line="1" Column="1" />
-      <File FileName="Kaggle_HelpingSantasHelpers/ElfCommander.cs" Line="12" Column="12" />
+      <File FileName="Kaggle_HelpingSantasHelpers/ElfCommander.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

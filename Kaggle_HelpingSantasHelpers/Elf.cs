@@ -90,9 +90,9 @@ namespace Kaggle_HelpingSantasHelpers
 					// Calculate time and productivity adjustment
 				}
 
-				return nextToy;
 			}
 
+			return nextToy;
 		}
 
 

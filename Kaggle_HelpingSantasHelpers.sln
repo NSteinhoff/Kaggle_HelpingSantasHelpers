@@ -3,12 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kaggle_HelpingSantasHelpers", "Kaggle_HelpingSantasHelpers\Kaggle_HelpingSantasHelpers.csproj", "{CC411DD4-6F7B-4EAD-877C-5FCF81C6B54C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kaggle_HelpingSantasHelpersTests", "Kaggle_HelpingSantasHelpersTests\Kaggle_HelpingSantasHelpersTests.csproj", "{19110DF3-78DC-45A0-A648-8A836C6CCC62}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{19110DF3-78DC-45A0-A648-8A836C6CCC62}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{19110DF3-78DC-45A0-A648-8A836C6CCC62}.Debug|x86.Build.0 = Debug|Any CPU
+		{19110DF3-78DC-45A0-A648-8A836C6CCC62}.Release|x86.ActiveCfg = Release|Any CPU
+		{19110DF3-78DC-45A0-A648-8A836C6CCC62}.Release|x86.Build.0 = Release|Any CPU
 		{CC411DD4-6F7B-4EAD-877C-5FCF81C6B54C}.Debug|x86.ActiveCfg = Debug|x86
 		{CC411DD4-6F7B-4EAD-877C-5FCF81C6B54C}.Debug|x86.Build.0 = Debug|x86
 		{CC411DD4-6F7B-4EAD-877C-5FCF81C6B54C}.Release|x86.ActiveCfg = Release|x86

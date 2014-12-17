@@ -9,8 +9,6 @@ namespace Kaggle_HelpingSantasHelpers
 		public static List<ToyOrder> partOfDayOrders = new List<ToyOrder> ();
 		public static List<ToyOrder> fullDayOrders = new List<ToyOrder> ();
 
-		public static List<
-
 		public static int AddNewOrdersToOrderBook (List<string> incomingOrders)
 		{
 			int ordersAdded = 0;
