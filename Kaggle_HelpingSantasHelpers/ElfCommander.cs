@@ -13,7 +13,7 @@ namespace Kaggle_HelpingSantasHelpers
 			for (int i = 0; i < numberOfElves; i++) {
 				_elves.Add (new Elf (_elves.Count + 1));
 			}
-
+			// TODO 
 			return _elves.Count;
 		}
 
