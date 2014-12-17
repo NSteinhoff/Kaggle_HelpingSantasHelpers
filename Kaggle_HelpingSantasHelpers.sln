@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kaggle_HelpingSantasHelpers", "Kaggle_HelpingSantasHelpers\Kaggle_HelpingSantasHelpers.csproj", "{CC411DD4-6F7B-4EAD-877C-5FCF81C6B54C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC411DD4-6F7B-4EAD-877C-5FCF81C6B54C}.Debug|x86.ActiveCfg = Debug|x86
+		{CC411DD4-6F7B-4EAD-877C-5FCF81C6B54C}.Debug|x86.Build.0 = Debug|x86
+		{CC411DD4-6F7B-4EAD-877C-5FCF81C6B54C}.Release|x86.ActiveCfg = Release|x86
+		{CC411DD4-6F7B-4EAD-877C-5FCF81C6B54C}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Kaggle_HelpingSantasHelpers\Kaggle_HelpingSantasHelpers.csproj
+	EndGlobalSection
+EndGlobal
