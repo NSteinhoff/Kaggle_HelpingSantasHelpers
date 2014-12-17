@@ -21,40 +21,6 @@ namespace Kaggle_HelpingSantasHelpers
 
 		public static void Testing ()
 		{
-//			Console.WriteLine (String.Format ("Peek - {0}", PeekNextLine ()));
-//			Console.WriteLine (String.Format ("Peek - {0}", PeekNextLine ()));
-//			Console.WriteLine (String.Format ("Read - {0}", ReadNextLine ()));
-//			Console.WriteLine (String.Format ("Peek - {0}", PeekNextLine ()));
-//			Console.WriteLine (String.Format ("Read - {0}", ReadNextLine ()));
-//			Console.WriteLine (String.Format ("Read - {0}", ReadNextLine ()));
-//
-//			Console.WriteLine (String.Format ("Date - {0}", ParseDateFromLine (PeekNextLine ()).ToString ()));
-//
-//			Console.WriteLine (String.Format ("Read - {0}", ReadNextLine ()));
-//
-//
-//			ReadLinesFromStream ();
-
-//
-//			List<string> newOrders = ReadNewIncomingOrdersFromStream (new DateTime (2014, 1, 1, 0, 0, 0));
-//
-//			Console.WriteLine (ToyOrderBook.AddNewOrdersToOrderBook (newOrders).ToString ());
-//
-//			Console.WriteLine (String.Format ("Peek - {0}", PeekNextLine ()));
-//
-//			newOrders = ReadNewIncomingOrdersFromStream (new DateTime (2014, 1, 10, 0, 0, 0));
-//
-//			Console.WriteLine (ToyOrderBook.AddNewOrdersToOrderBook (newOrders).ToString ());
-//
-//			Console.WriteLine (String.Format ("Peek - {0}", PeekNextLine ()));
-//
-//			Console.WriteLine (String.Format ("Date - {0}", ParseDateFromLine (PeekNextLine ()).ToString ()));
-//
-//			Console.WriteLine (String.Format ("Read - {0}", ReadNextLine ()));
-
-
-
-
 			List<string> newOrders = ReadNewIncomingOrdersFromStream (new DateTime (2014, 1, 1, 0, 0, 0));
 
 			ToyOrderBook.AddNewOrdersToOrderBook (newOrders);
