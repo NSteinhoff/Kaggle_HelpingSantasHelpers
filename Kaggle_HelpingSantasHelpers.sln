@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kaggle_HelpingSantasHelpers", "Kaggle_HelpingSantasHelpers\Kaggle_HelpingSantasHelpers.csproj", "{CC411DD4-6F7B-4EAD-877C-5FCF81C6B54C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kaggle_HelpingSantasHelpersTests", "Kaggle_HelpingSantasHelpersTests\Kaggle_HelpingSantasHelpersTests.csproj", "{19110DF3-78DC-45A0-A648-8A836C6CCC62}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kaggle_HelpingSantasHelpers.Tests", "Kaggle_HelpingSantasHelpersTests\Kaggle_HelpingSantasHelpers.Tests.csproj", "{19110DF3-78DC-45A0-A648-8A836C6CCC62}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -12,31 +12,22 @@ namespace Kaggle_HelpingSantasHelpers
 		private static Queue<string> bufferedLine;
 		private static bool hasReadHeader = false;
 		private static int numberOfLinesRead = 0;
-		private static const int maxLinesToRead = 100000;
+		private const int maxLinesToRead = 100000;
 
-		public static void Testing ()
-		{
-			DateTime currentDate = new DateTime (2014, 1, 1, 0, 0, 0);
-
-			List<string> newOrders = ReadNewIncomingOrdersFromStream (currentDate);
-
-			ToyOrderBook.AddNewOrdersToOrderBook (newOrders);
-		}
-
-		public static bool OpenReadStream (string path = filePath)
+		public static StreamReader OpenReadStream (string path = filePath)
 		{
 			try {
 				inputFile = File.OpenRead (path);
 				reader = new StreamReader (inputFile);
 				bufferedLine = new Queue<string> ();
 				numberOfLinesRead = 0;
-				Console.WriteLine (String.Format ("Header - {0}", ReadHeaderLine ()));
-
 			} catch (FileNotFoundException ex) {
+				Console.WriteLine ("In function 'OpenReadStream()'");
 				Console.WriteLine (ex.Message);
-				return false;
+				throw(ex);
 			}
-			return true;
+
+			return reader;
 		}
 
 		public static void CloseReadStream ()
@@ -65,7 +56,7 @@ namespace Kaggle_HelpingSantasHelpers
 			return lines;
 		}
 
-		public static List<string> ReadLinesFromStream (int linesToRead = 100000)
+		public static List<string> ReadLinesFromStream (int linesToRead = maxLinesToRead)
 		{
 			List<string> lines = new List<string> ();
 
@@ -112,7 +103,7 @@ namespace Kaggle_HelpingSantasHelpers
 			return line;
 		}
 
-		private static string ReadHeaderLine ()
+		public static string ReadHeaderLine ()
 		{
 			if (!hasReadHeader) {
 				string header = reader.ReadLine ();

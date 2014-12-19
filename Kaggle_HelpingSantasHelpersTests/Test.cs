@@ -10,13 +10,13 @@ namespace Kaggle_HelpingSantasHelpersTests
 	public class TestDummy
 	{
 		[Test ()]
-		public void TestCaseFail ()
+		public void TestCaseNotEqual ()
 		{
-			Assert.AreEqual (1, 0);
+			Assert.AreNotEqual (1, 0);
 		}
 
 		[Test ()]
-		public void TestCasePass ()
+		public void TestCaseEqual ()
 		{
 			Assert.AreEqual (1, 1);
 		}

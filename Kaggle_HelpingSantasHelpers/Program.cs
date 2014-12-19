@@ -9,14 +9,20 @@ namespace Kaggle_HelpingSantasHelpers
 			Console.WriteLine ("Start of program. Press any key....");
 			Console.ReadKey ();
 
-			DataReader.OpenReadStream (DataReader.filePath);
+			try {
 
-			ElfCommander.HireElves (10);
+				DataReader.OpenReadStream (DataReader.filePath);
+				Console.WriteLine (DataReader.ReadHeaderLine ());
 
-			// TODO transfer Testing() functionality to testing suite!
-			DataReader.Testing ();
+				ElfCommander.HireElves (10);
 
-			DataReader.CloseReadStream ();
+				DataReader.CloseReadStream ();
+
+			} catch (Exception ex) {
+				Console.WriteLine ("In 'Main()'");
+				Console.WriteLine (ex.Message);
+				Console.WriteLine (ex.ToString ());
+			}
 
 			Console.WriteLine ("End of program.");
 		}
