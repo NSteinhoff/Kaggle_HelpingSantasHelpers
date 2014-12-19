@@ -158,7 +158,7 @@ namespace Kaggle_HelpingSantasHelpers
 		{
 			bool isWithinNumberOfDays = false;
 			string nextLine = PeekNextLine ();
-			DateTime dateNextLine = ParseDateFromLine (nextLine);
+			DateTime dateNextLine = DateParser.ParseDateFromLine (nextLine);
 			TimeSpan timeBetween = dateNextLine - currentDate;
 
 			if (timeBetween.TotalDays < numberOfDaysAhead) {
@@ -170,28 +170,6 @@ namespace Kaggle_HelpingSantasHelpers
 			return isWithinNumberOfDays;
 		}
 
-		private static DateTime ParseDateFromLine (string line)
-		{
-			DateTime date = new DateTime ();
-			string[] values = line.Split (',');
-			string[] dateComponents = values [1].Split (' ');
-
-			try {
-				int year = Convert.ToInt32 (dateComponents [0]);
-				int month = Convert.ToInt32 (dateComponents [1]);
-				int day = Convert.ToInt32 (dateComponents [2]);
-				int hour = Convert.ToInt32 (dateComponents [3]);
-				int minute = Convert.ToInt32 (dateComponents [4]);
-				int second = 0;
-
-				date = new DateTime (year, month, day, hour, minute, second);
-
-			} catch (Exception ex) {
-				Console.WriteLine (ex.Message);
-			}
-
-			return date;
-		}
 	}
 }
 

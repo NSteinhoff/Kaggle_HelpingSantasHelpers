@@ -19,7 +19,7 @@ namespace Kaggle_HelpingSantasHelpers
 
 		public static List<Elf> Elves {
 			get {
-				return _elves.OrderBy (x => x.NextAvailable).ToList ();
+				return _elves.OrderBy (x => x.nextAvailable).ToList ();
 			}
 		}
 	}
