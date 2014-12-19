@@ -19,11 +19,6 @@ namespace Kaggle_HelpingSantasHelpers
 			_durationMinutes = Convert.ToInt32 (orderComponents [2]);
 		}
 
-		//		public void Print ()
-		//		{
-		//			Console.WriteLine (String.Format ("Toy {0}, Arrival {1}, Duration {2}", this._id, this._arrivalTime, this._durationMinutes));
-		//		}
-
 		public int ID {
 			get { return _id; }
 		}
@@ -39,6 +34,25 @@ namespace Kaggle_HelpingSantasHelpers
 		public bool ExceedWorkingDay {
 			get { return ((DurationMinutes / 4) > (10 * 60)); }
 		}
+
+		public bool ExceedWorkingDayProductivityNeutrality {
+			get {
+				return ((DurationMinutes / 4) > MaxProductivityNeutralMinutes);
+			}
+		}
+
+		public static double MaxProductivityNeutralMinutes {
+			get {
+				int sanctionedHours = 10;
+				double factorSanctioned = 1.02;
+				double factorUnsanctioned = 0.9;
+
+				double maxUnsanctioned = -sanctionedHours * Math.Log (factorSanctioned) / Math.Log (factorUnsanctioned);
+
+				return (sanctionedHours + maxUnsanctioned) * 60;
+			}
+		}
+
 	}
 }
 

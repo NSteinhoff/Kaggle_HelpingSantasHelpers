@@ -9,7 +9,10 @@ namespace Kaggle_HelpingSantasHelpers
 			Console.WriteLine ("Start of program. Press any key....");
 			Console.ReadKey ();
 
+
 			try {
+
+
 
 				DataReader.OpenReadStream (DataReader.filePath);
 				Console.WriteLine (DataReader.ReadHeaderLine ());
