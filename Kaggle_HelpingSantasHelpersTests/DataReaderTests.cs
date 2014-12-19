@@ -73,8 +73,6 @@ namespace Kaggle_HelpingSantasHelpersTests
 			dummyWriter.Flush ();
 			dummyWriter.Close ();
 		}
-
-		//This is the testing branch!
 	}
 }
 
