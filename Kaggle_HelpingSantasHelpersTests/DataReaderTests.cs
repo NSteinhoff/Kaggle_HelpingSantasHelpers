@@ -6,7 +6,7 @@ using Kaggle_HelpingSantasHelpers;
 
 namespace Kaggle_HelpingSantasHelpersTests
 {
-	[TestFixture ()]
+	[TestFixture]
 	public class DataReaderTests
 	{
 		string dummyFileName;
@@ -14,7 +14,7 @@ namespace Kaggle_HelpingSantasHelpersTests
 		StreamReader reader;
 		const int TEN_THOUSAND = 10000;
 
-		[TestFixtureSetUp ()]
+		[SetUp]
 		public void Setup ()
 		{
 			dummyFileName = "dummyFile.txt";
@@ -25,30 +25,24 @@ namespace Kaggle_HelpingSantasHelpersTests
 			reader = DataReader.OpenReadStream (dummyFileName);
 		}
 
-		[TestFixtureTearDown ()]
+		[TearDown]
 		public void Teardown ()
 		{
 			DataReader.CloseReadStream ();
 			File.Delete (dummyFileName);
 		}
 
-		[Test ()]
+		[Test]
 		public void OpenReadStream_FileExists_ShouldReadHeader ()
 		{
-			reader.DiscardBufferedData ();
-			reader.BaseStream.Seek (0, SeekOrigin.Begin);
-
 			string dummyLine = reader.ReadLine ();
 
 			Assert.AreEqual ("header", dummyLine);
 		}
 
-		[Test ()]
+		[Test]
 		public void ReadLinesFromStream_TenThousandLines_ShouldReturnListOfTenThousandStrings ()
 		{
-			reader.BaseStream.Seek (0, SeekOrigin.Begin);
-			reader.DiscardBufferedData ();
-
 			List<string> lines = DataReader.ReadLinesFromStream (TEN_THOUSAND);
 
 			Assert.AreEqual (TEN_THOUSAND, lines.Count);

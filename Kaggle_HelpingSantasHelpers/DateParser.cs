@@ -8,7 +8,7 @@ namespace Kaggle_HelpingSantasHelpers
 		{
 			DateTime date = new DateTime ();
 			string[] values = line.Split (',');
-			string[] dateComponents = values [1].Split (' ');
+			string[] dateComponents = values [1].Trim ().Split (' ');
 
 			date = ParseDateFromStringArray (dateComponents);
 
