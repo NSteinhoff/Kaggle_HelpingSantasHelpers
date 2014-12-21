@@ -8,6 +8,12 @@ namespace Kaggle_HelpingSantasHelpers
 	{
 		private static List<Elf> _elves = new List<Elf> ();
 
+		public static List<Elf> Elves {
+			get {
+				return _elves.OrderBy (x => x.nextAvailable).ToList ();
+			}
+		}
+
 		public static int HireElves (int numberOfElves)
 		{
 			for (int i = 0; i < numberOfElves; i++) {
@@ -17,10 +23,9 @@ namespace Kaggle_HelpingSantasHelpers
 			return _elves.Count;
 		}
 
-		public static List<Elf> Elves {
-			get {
-				return _elves.OrderBy (x => x.nextAvailable).ToList ();
-			}
+		public static Elf PickNextElf ()
+		{
+			return Elves [0];
 		}
 	}
 }

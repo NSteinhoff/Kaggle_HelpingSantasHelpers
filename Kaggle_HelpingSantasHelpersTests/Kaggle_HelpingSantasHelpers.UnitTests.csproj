@@ -30,22 +30,23 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Test.cs" />
     <Compile Include="DataReaderTests.cs" />
     <Compile Include="DateParserTests.cs" />
+    <Compile Include="ToyOrderBookTests.cs" />
+    <Compile Include="ElfTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kaggle_HelpingSantasHelpers\Kaggle_HelpingSantasHelpers.csproj">
       <Project>{CC411DD4-6F7B-4EAD-877C-5FCF81C6B54C}</Project>
       <Name>Kaggle_HelpingSantasHelpers</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

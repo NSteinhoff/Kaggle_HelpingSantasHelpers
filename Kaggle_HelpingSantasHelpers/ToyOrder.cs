@@ -8,51 +8,46 @@ namespace Kaggle_HelpingSantasHelpers
 		private DateTime _arrivalTime;
 		private int _durationMinutes;
 
+		private const int SANCTIONED_HOURS = 10;
+		private const double FACTOR_SANCTIONED = 1.02;
+		private const double FACTOR_UNSANCTIONED = 0.9;
+
 		public ToyOrder (string orderString)
 		{
 			string[] orderComponents = orderString.Split (',');
-
-			_id = Convert.ToInt32 (orderComponents [0]);
-
-			_arrivalTime = DateParser.ParseDateFromLine (orderString);
-
-			_durationMinutes = Convert.ToInt32 (orderComponents [2]);
+			this._id = Convert.ToInt32 (orderComponents [0]);
+			this._arrivalTime = DateParser.ParseDateFromLine (orderString);
+			this._durationMinutes = Convert.ToInt32 (orderComponents [2]);
+			this.elfId = 0;
 		}
 
-		public int ID {
-			get { return _id; }
+		public int iD {
+			get { return this._id; }
 		}
 
-		public DateTime ArrivalTime {
-			get { return _arrivalTime; }
+		public DateTime arrivalTime {
+			get { return this._arrivalTime; }
 		}
 
-		public int DurationMinutes {
-			get { return _durationMinutes; }
+		public int durationMinutes {
+			get { return this._durationMinutes; }
 		}
 
-		public bool ExceedWorkingDay {
-			get { return ((DurationMinutes / 4) > (10 * 60)); }
-		}
+		public int elfId{ get; set; }
 
-		public bool ExceedWorkingDayProductivityNeutrality {
+		public bool exceedWorkingDay {
 			get {
-				return ((DurationMinutes / 4) > MaxProductivityNeutralMinutes);
+				return ((this.durationMinutes / 4) > (10 * 60));
 			}
 		}
 
-		public static double MaxProductivityNeutralMinutes {
+		public static double maxProductivityNeutralMinutes {
 			get {
-				int sanctionedHours = 10;
-				double factorSanctioned = 1.02;
-				double factorUnsanctioned = 0.9;
+				double maxUnsanctioned = -SANCTIONED_HOURS * Math.Log (FACTOR_SANCTIONED) / Math.Log (FACTOR_UNSANCTIONED);
 
-				double maxUnsanctioned = -sanctionedHours * Math.Log (factorSanctioned) / Math.Log (factorUnsanctioned);
-
-				return (sanctionedHours + maxUnsanctioned) * 60;
+				return (SANCTIONED_HOURS + maxUnsanctioned) * 60;
 			}
 		}
-
 	}
 }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Kaggle_HelpingSantasHelpers
 {
@@ -11,13 +12,23 @@ namespace Kaggle_HelpingSantasHelpers
 
 
 			try {
-
-
-
+				ToyOrderBook.SetupOrderLists ();
 				DataReader.OpenReadStream (DataReader.filePath);
 				Console.WriteLine (DataReader.ReadHeaderLine ());
-
+				List<string> incomingOrders = DataReader.ReadLinesFromStream (10000);
+				ToyOrderBook.AddNewOrdersToOrderBook (incomingOrders);
 				ElfCommander.HireElves (10);
+
+				int remainingOrders = 0; 
+
+				while (remainingOrders > 0) {
+					remainingOrders = ToyOrderBook.CountAllOrdersInBook ();
+
+
+
+
+
+				}
 
 				DataReader.CloseReadStream ();
 
