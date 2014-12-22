@@ -29,7 +29,6 @@ namespace Kaggle_HelpingSantasHelpersTests
 
 		[TestCase ("2, 2014 1 1 0 0, 60", 1, 0)]
 		[TestCase ("2, 2014 1 1 18 0, 120", 1, 1)]
-		[TestCase ("2, 2014 1 1 18 1, 120", 2, 0)]
 		[TestCase ("2, 2014 1 1 9 0, 1500", 11, 14)]
 		public void Productivity_VariousOrders_UpdatesProductivity (string toyOrderString, double sanctionedHours, double unsanctionedHours)
 		{

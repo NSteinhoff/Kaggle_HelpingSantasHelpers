@@ -52,7 +52,7 @@ namespace Kaggle_HelpingSantasHelpers
 					nextAvailable = new DateTime (this.workingTill.Year, this.workingTill.Month, this.workingTill.Day, 9, 0, 0);
 
 				} else if (this.workingTill.Hour >= 19) {
-					nextAvailable = new DateTime (this.workingTill.Year, this.workingTill.Month, this.workingTill.Day + 1, 9, 0, 0); 
+					nextAvailable = (new DateTime (this.workingTill.Year, this.workingTill.Month, this.workingTill.Day, 9, 0, 0)).AddDays (1); 
 					
 				} else {
 					nextAvailable = this.workingTill;
@@ -164,7 +164,7 @@ namespace Kaggle_HelpingSantasHelpers
 				startTime = new DateTime (earliestAvailableTime.Year, earliestAvailableTime.Month, earliestAvailableTime.Day, 9, 0, 0);
 
 			} else if (earliestAvailableTime.Hour >= 19) {
-				startTime = new DateTime (earliestAvailableTime.Year, earliestAvailableTime.Month, earliestAvailableTime.Day + 1, 9, 0, 0); 
+				startTime = (new DateTime (earliestAvailableTime.Year, earliestAvailableTime.Month, earliestAvailableTime.Day, 9, 0, 0)).AddDays (1); 
 
 			} else {
 				startTime = earliestAvailableTime;
@@ -175,9 +175,11 @@ namespace Kaggle_HelpingSantasHelpers
 			DateTime endOfStartDay = new DateTime (startTime.Year, startTime.Month, startTime.Day, 19, 0, 0);
 			int minutesLeftInDay = (int)(endOfStartDay - startTime).TotalMinutes;
 
-			if ((minutesTillFinished < 600) && ((minutesTillFinished * 0.5) > minutesLeftInDay)) {
+			double overtimeFractionAllowed = MainClass.CalculateFractionComplete ();
+
+			if ((minutesTillFinished < 600) && ((minutesTillFinished * overtimeFractionAllowed) > minutesLeftInDay)) {
 				DateTime tempTime = new DateTime (startTime.Year, startTime.Month, startTime.Day, startTime.Hour, startTime.Minute, startTime.Second);
-				startTime = new DateTime (tempTime.Year, tempTime.Month, tempTime.Day + 1, 9, 0, 0); 
+				startTime = (new DateTime (tempTime.Year, tempTime.Month, tempTime.Day, 9, 0, 0)).AddDays (1); 
 			}
 
 

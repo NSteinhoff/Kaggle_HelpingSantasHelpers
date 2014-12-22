@@ -7,7 +7,8 @@ namespace Kaggle_HelpingSantasHelpers
 {
 	class MainClass
 	{
-		const int N_ELVES = 900;
+		public const int N_ELVES = 900;
+		public const int N_TOYS = 100000;
 
 		public static void Main (string[] args)
 		{
@@ -23,7 +24,7 @@ namespace Kaggle_HelpingSantasHelpers
 
 				DataReader.OpenReadStream (DataReader.filePath);
 				Console.WriteLine (DataReader.ReadHeaderLine ());
-				List<string> incomingOrders = DataReader.ReadLinesFromStream (10000000);
+				List<string> incomingOrders = DataReader.ReadLinesFromStream (N_TOYS);
 				ToyOrderBook.AddNewOrdersToOrderBook (incomingOrders);
 				DataReader.CloseReadStream ();
 
@@ -33,7 +34,7 @@ namespace Kaggle_HelpingSantasHelpers
 				int processedOrders = 1;
 				while (remainingOrders > 0) {
 					if (processedOrders % 1000 == 0) {
-						Console.WriteLine (String.Format ("Toys processed: {0}", processedOrders.ToString ()));
+						Console.WriteLine (String.Format ("Toys processed: {0}  {1}", processedOrders.ToString (), CalculateFractionComplete ().ToString ("F2")));
 					}
 					processedOrders++;
 
@@ -86,6 +87,15 @@ namespace Kaggle_HelpingSantasHelpers
 
 			resultsWriter.Flush ();
 			resultsWriter.Close ();
+		}
+
+		public static double CalculateFractionComplete ()
+		{
+			double completedOrders = ToyOrderBook.completedOrders.Count;
+
+			double fraction = completedOrders / N_TOYS;
+
+			return fraction;
 		}
 
 	}
