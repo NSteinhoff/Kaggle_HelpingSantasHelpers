@@ -35,6 +35,16 @@ namespace Kaggle_HelpingSantasHelpers
 
 		public int elfId{ get; set; }
 
+		public int finalDuration{ get; set; }
+
+		public DateTime startTime { get; set; }
+
+		public DateTime finishTime { 
+			get {
+				return this.startTime.AddMinutes (finalDuration);
+			}
+		}
+
 		public bool exceedWorkingDay {
 			get {
 				return ((this.durationMinutes / 4) > (10 * 60));
@@ -47,6 +57,17 @@ namespace Kaggle_HelpingSantasHelpers
 
 				return (SANCTIONED_HOURS + maxUnsanctioned) * 60;
 			}
+		}
+
+		public override string ToString ()
+		{
+			string toyIdString = this.iD.ToString ();
+			string elfIdString = this.elfId.ToString ();
+			string startTimeString = String.Format ("{0} {1} {2} {3} {4}", this.startTime.Year, this.startTime.Month, this.startTime.Day, this.startTime.Hour, this.startTime.Minute);
+			string finalDurationString = this.finalDuration.ToString ();
+
+			string toyString = String.Format ("{0}, {1}, {2}, {3}", toyIdString, elfIdString, startTimeString, finalDurationString);
+			return toyString;
 		}
 	}
 }

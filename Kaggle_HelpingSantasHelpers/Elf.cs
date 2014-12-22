@@ -78,13 +78,33 @@ namespace Kaggle_HelpingSantasHelpers
 		{
 			ToyOrder toy = null;
 
-			toy = PickSmallestAvailableToy ();
-
+			if (this.productivity == 4) {
+				toy = PickLargestAvailableToy ();
+			} else {
+				toy = PickSmallestAvailableToy ();
+			}
 			if (toy == null) {
 				toy = PickErliestAvailableToy ();
 			}
 
-			toy.elfId = this.id;
+			return toy;
+		}
+
+		private ToyOrder PickLargestAvailableToy ()
+		{
+			ToyOrder toy = null;
+
+			for (int i = ToyOrderBook.orderLists.Count - 1; i >= 0; i--) {
+				List<ToyOrder> bracket = ToyOrderBook.orderLists [i];
+
+				if (bracket.Count > 0) {
+					toy = PickAvailableToyInBracket (bracket);
+				}
+
+				if (toy != null) {
+					break;
+				}
+			}
 
 			return toy;
 		}
@@ -150,8 +170,16 @@ namespace Kaggle_HelpingSantasHelpers
 				startTime = earliestAvailableTime;
 			}
 
-
 			int minutesTillFinished = (int)Math.Ceiling ((double)toy.durationMinutes / this.productivity);
+
+			DateTime endOfStartDay = new DateTime (startTime.Year, startTime.Month, startTime.Day, 19, 0, 0);
+			int minutesLeftInDay = (int)(endOfStartDay - startTime).TotalMinutes;
+
+			if ((minutesTillFinished < 600) && ((minutesTillFinished * 0.5) > minutesLeftInDay)) {
+				DateTime tempTime = new DateTime (startTime.Year, startTime.Month, startTime.Day, startTime.Hour, startTime.Minute, startTime.Second);
+				startTime = new DateTime (tempTime.Year, tempTime.Month, tempTime.Day + 1, 9, 0, 0); 
+			}
+
 
 			this.workingTill = startTime.AddMinutes (minutesTillFinished);
 
@@ -159,6 +187,11 @@ namespace Kaggle_HelpingSantasHelpers
 			int unsanctionedMinutes = minutesTillFinished - sanctionedMinutes;
 
 			this.neededRest = unsanctionedMinutes;
+
+
+			toy.elfId = this.id;
+			toy.startTime = startTime;
+			toy.finalDuration = minutesTillFinished;
 
 			UpdateProductivity (sanctionedMinutes, unsanctionedMinutes);
 

@@ -41,6 +41,10 @@
     <Compile Include="Elf.cs" />
     <Compile Include="ElfCommander.cs" />
     <Compile Include="DateParser.cs" />
+    <Compile Include="MoreLinq\MoreEnumerable.MaxBy.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>

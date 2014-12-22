@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MoreLinq;
 
 namespace Kaggle_HelpingSantasHelpers
 {
@@ -15,6 +16,12 @@ namespace Kaggle_HelpingSantasHelpers
 
 		private static double orderBracketsQuotient {
 			get{ return (double)MAX_ORDER_DURATION_MINUTES / (double)orderBracketsCount; } 
+		}
+
+		public static ToyOrder lastOrderCompleted {
+			get { 
+				return completedOrders.MaxBy (x => x.finishTime);
+			}
 		}
 
 		public static void SetupOrderLists ()
@@ -63,6 +70,27 @@ namespace Kaggle_HelpingSantasHelpers
 				ordersPresent += list.Count;
 			}
 			return ordersPresent;
+		}
+
+		public static void PrintCompletedOrdersToConsole (int maxToPrint = 25)
+		{
+			if (completedOrders.Count <= maxToPrint) {
+				foreach (ToyOrder toy in completedOrders) {
+					Console.WriteLine (toy.ToString ());
+				}
+			} else {
+				for (int i = 0; i < 10; i++) {
+					ToyOrder toy = completedOrders [i];
+					Console.WriteLine (toy.ToString ());
+				}
+				Console.WriteLine ("---");
+				for (int j = completedOrders.Count - 1 - 10; j < completedOrders.Count; j++) {
+					ToyOrder toy = completedOrders [j];
+					Console.WriteLine (toy.ToString ());
+				}
+
+			}
+
 		}
 
 		private static int FilterNewOrderIntoBracket (ToyOrder toyOrder)

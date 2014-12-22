@@ -1,6 +1,9 @@
 ﻿<Properties GitUserInfo="UsingGIT">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Kaggle_HelpingSantasHelpers/Program.cs">
+    <Files>
+      <File FileName="Kaggle_HelpingSantasHelpers/Program.cs" Line="35" Column="35" />
+    </Files>
     <Pads>
       <Pad Id="MonoDevelop.NUnit.TestPad">
         <State expanded="True" selected="True" />

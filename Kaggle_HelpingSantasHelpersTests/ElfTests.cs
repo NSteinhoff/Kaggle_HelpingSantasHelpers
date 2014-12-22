@@ -11,10 +11,10 @@ namespace Kaggle_HelpingSantasHelpersTests
 	public class ElfTests
 	{
 		[TestCase ("2, 2014 1 1 0 0, 5", 2014, 1, 1, 9, 5)]
-		[TestCase ("2, 2014 1 1 0 0, 600", 2014, 1, 2, 9, 0)]
 		[TestCase ("2, 2014 1 1 0 0, 610", 2014, 1, 2, 9, 10)]
 		[TestCase ("2, 2014 1 1 18 59, 610", 2014, 1, 3, 9, 9)]
 		[TestCase ("2, 2014 1 2 19 00, 10", 2014, 1, 3, 9, 10)]
+		[TestCase ("2, 2014 1 2 18 55, 10", 2014, 1, 3, 9, 5)]
 		public void NextAvailable_AvailableToyOrders_ReturnsCorrectTime (string toyOrderString, int year, int month, int day, int hour, int minute)
 		{
 			ToyOrder toy = new ToyOrder (toyOrderString);
@@ -29,6 +29,7 @@ namespace Kaggle_HelpingSantasHelpersTests
 
 		[TestCase ("2, 2014 1 1 0 0, 60", 1, 0)]
 		[TestCase ("2, 2014 1 1 18 0, 120", 1, 1)]
+		[TestCase ("2, 2014 1 1 18 1, 120", 2, 0)]
 		[TestCase ("2, 2014 1 1 9 0, 1500", 11, 14)]
 		public void Productivity_VariousOrders_UpdatesProductivity (string toyOrderString, double sanctionedHours, double unsanctionedHours)
 		{
