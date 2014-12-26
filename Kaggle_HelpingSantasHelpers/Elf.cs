@@ -58,7 +58,11 @@ namespace Kaggle_HelpingSantasHelpers
 					nextAvailable = this.workingTill;
 				}
 
-				return nextAvailable + CalculateRestTime (this.neededRest);
+				if (this.neededRest == 0) {
+					return nextAvailable;
+				} else {
+					return CalculateRestTime (nextAvailable, this.neededRest);
+				}
 			}
 		}
 
@@ -74,15 +78,21 @@ namespace Kaggle_HelpingSantasHelpers
 			get{ return new DateTime (nextAvailable.Year, nextAvailable.Month, nextAvailable.Day, 19, 0, 0); }
 		}
 
-		public ToyOrder ChooseToy ()
+		public ToyOrder ChooseToy (bool isQuickLearnMode = false)
 		{
 			ToyOrder toy = null;
 
+			DateTime nextAvailable = new DateTime (this.nextAvailable.Year, this.nextAvailable.Month, this.nextAvailable.Day, this.nextAvailable.Hour, this.nextAvailable.Minute, this.nextAvailable.Second);
+
 			if (this.productivity == 4) {
-				toy = PickLargestAvailableToy ();
+				toy = PickLargestAvailableToy (nextAvailable);
+			} else if (isQuickLearnMode) {
+				toy = PickSmallestAvailableToy (nextAvailable);
 			} else {
-				toy = PickSmallestAvailableToy ();
+				toy = PickLargestCompletableToday (nextAvailable);
 			}
+
+
 			if (toy == null) {
 				toy = PickErliestAvailableToy ();
 			}
@@ -90,7 +100,7 @@ namespace Kaggle_HelpingSantasHelpers
 			return toy;
 		}
 
-		private ToyOrder PickLargestAvailableToy ()
+		private ToyOrder PickLargestAvailableToy (DateTime nextAvailable)
 		{
 			ToyOrder toy = null;
 
@@ -98,7 +108,7 @@ namespace Kaggle_HelpingSantasHelpers
 				List<ToyOrder> bracket = ToyOrderBook.orderLists [i];
 
 				if (bracket.Count > 0) {
-					toy = PickAvailableToyInBracket (bracket);
+					toy = PickAvailableToyInBracket (bracket, nextAvailable);
 				}
 
 				if (toy != null) {
@@ -109,7 +119,7 @@ namespace Kaggle_HelpingSantasHelpers
 			return toy;
 		}
 
-		private ToyOrder PickSmallestAvailableToy ()
+		private ToyOrder PickSmallestAvailableToy (DateTime nextAvailable)
 		{
 			ToyOrder toy = null;
 
@@ -117,7 +127,7 @@ namespace Kaggle_HelpingSantasHelpers
 				List<ToyOrder> bracket = ToyOrderBook.orderLists [i];
 
 				if (bracket.Count > 0) {
-					toy = PickAvailableToyInBracket (bracket);
+					toy = PickAvailableToyInBracket (bracket, nextAvailable);
 				}
 
 				if (toy != null) {
@@ -128,11 +138,31 @@ namespace Kaggle_HelpingSantasHelpers
 			return toy;
 		}
 
-		private ToyOrder PickAvailableToyInBracket (List<ToyOrder> bracket)
+		private ToyOrder PickLargestCompletableToday (DateTime nextAvailable)
+		{
+			int bestBracket = (int)Math.Floor (this.effectiveWorkTimeLeft.TotalMinutes / ToyOrderBook.orderBracketsQuotient) - 1;
+
+			ToyOrder toy = null;
+
+			for (int i = Math.Max (bestBracket, 0); i >= 0; i--) {
+				List<ToyOrder> bracket = ToyOrderBook.orderLists [i];
+
+				if (bracket.Count > 0) {
+					toy = PickAvailableToyInBracket (bracket, nextAvailable);
+				}
+
+				if (toy != null) {
+					break;
+				}
+			}
+			return toy;
+		}
+
+		private ToyOrder PickAvailableToyInBracket (List<ToyOrder> bracket, DateTime nextAvailable)
 		{
 			ToyOrder toy = null;
 			ToyOrder firstToyInBracket = bracket [0];
-			if (firstToyInBracket.arrivalTime <= this.nextAvailable) {
+			if (firstToyInBracket.arrivalTime <= nextAvailable) {
 				toy = firstToyInBracket;
 			}
 			return toy;
@@ -155,33 +185,11 @@ namespace Kaggle_HelpingSantasHelpers
 			return toy;
 		}
 
-
 		public void BuildToy (ToyOrder toy)
 		{
-			DateTime startTime;
-			DateTime earliestAvailableTime = new DateTime (Math.Max (toy.arrivalTime.Ticks, this.nextAvailable.Ticks));
-			if (earliestAvailableTime.Hour < 9) {
-				startTime = new DateTime (earliestAvailableTime.Year, earliestAvailableTime.Month, earliestAvailableTime.Day, 9, 0, 0);
-
-			} else if (earliestAvailableTime.Hour >= 19) {
-				startTime = (new DateTime (earliestAvailableTime.Year, earliestAvailableTime.Month, earliestAvailableTime.Day, 9, 0, 0)).AddDays (1); 
-
-			} else {
-				startTime = earliestAvailableTime;
-			}
-
 			int minutesTillFinished = (int)Math.Ceiling ((double)toy.durationMinutes / this.productivity);
 
-			DateTime endOfStartDay = new DateTime (startTime.Year, startTime.Month, startTime.Day, 19, 0, 0);
-			int minutesLeftInDay = (int)(endOfStartDay - startTime).TotalMinutes;
-
-			double overtimeFractionAllowed = MainClass.CalculateFractionComplete ();
-
-			if ((minutesTillFinished < 600) && ((minutesTillFinished * overtimeFractionAllowed) > minutesLeftInDay)) {
-				DateTime tempTime = new DateTime (startTime.Year, startTime.Month, startTime.Day, startTime.Hour, startTime.Minute, startTime.Second);
-				startTime = (new DateTime (tempTime.Year, tempTime.Month, tempTime.Day, 9, 0, 0)).AddDays (1); 
-			}
-
+			DateTime startTime = CalculateStartTime (toy, minutesTillFinished);
 
 			this.workingTill = startTime.AddMinutes (minutesTillFinished);
 
@@ -189,7 +197,6 @@ namespace Kaggle_HelpingSantasHelpers
 			int unsanctionedMinutes = minutesTillFinished - sanctionedMinutes;
 
 			this.neededRest = unsanctionedMinutes;
-
 
 			toy.elfId = this.id;
 			toy.startTime = startTime;
@@ -201,36 +208,72 @@ namespace Kaggle_HelpingSantasHelpers
 			ToyOrderBook.RemoveOrderFromBooks (toy);
 		}
 
+		DateTime CalculateStartTime (ToyOrder toy, int minutesTillFinished)
+		{
+			DateTime startTime;
+			DateTime earliestAvailableTime = new DateTime (Math.Max (toy.arrivalTime.Ticks, this.nextAvailable.Ticks));
+			if (earliestAvailableTime.Hour < 9) {
+				startTime = new DateTime (earliestAvailableTime.Year, earliestAvailableTime.Month, earliestAvailableTime.Day, 9, 0, 0);
+			} else if (earliestAvailableTime.Hour >= 19) {
+				startTime = (new DateTime (earliestAvailableTime.Year, earliestAvailableTime.Month, earliestAvailableTime.Day, 9, 0, 0)).AddDays (1);
+			} else {
+				startTime = earliestAvailableTime;
+			}
+			DateTime endOfStartDay = new DateTime (startTime.Year, startTime.Month, startTime.Day, 19, 0, 0);
+			int minutesLeftInDay = (int)(endOfStartDay - startTime).TotalMinutes;
+			double overtimeFractionForbidden = 1 - Math.Pow (MainClass.CalculateFractionComplete (), 2);
+			if ((minutesTillFinished < 600) && ((minutesTillFinished * overtimeFractionForbidden) > minutesLeftInDay)) {
+				DateTime tempTime = new DateTime (startTime.Year, startTime.Month, startTime.Day, startTime.Hour, startTime.Minute, startTime.Second);
+				startTime = (new DateTime (tempTime.Year, tempTime.Month, tempTime.Day, 9, 0, 0)).AddDays (1);
+			}
+			return startTime;
+		}
+
 		private int CalculateSanctionedMinutes (DateTime start, int duration)
 		{
 			DateTime end = start.AddMinutes (duration);
 
 			DateTime endOfStartDay = new DateTime (start.Year, start.Month, start.Day, 19, 0, 0);
 			int sanctionedMinutesStartDay = (int)(endOfStartDay - start).TotalMinutes;
+
 			int fullDays = (int)Math.Floor ((end - start).TotalDays);
-			int restMinutes = (int)(end - start.AddDays (fullDays)).TotalMinutes;
+			int remainingMinutes = (int)(end - start.AddDays (fullDays)).TotalMinutes;
 
 			int sanctionedMinutesFromFullDays = 10 * 60 * fullDays;
 			int sanctionedMinutesFromPartialDays = 0;
 
-			if (restMinutes <= sanctionedMinutesStartDay) {
-				sanctionedMinutesFromPartialDays = restMinutes;
-			} else if (restMinutes <= (sanctionedMinutesStartDay + 14 * 60)) {
+			if (remainingMinutes <= sanctionedMinutesStartDay) {
+				sanctionedMinutesFromPartialDays = remainingMinutes;
+			} else if (remainingMinutes <= (sanctionedMinutesStartDay + 14 * 60)) {
 				sanctionedMinutesFromPartialDays = sanctionedMinutesStartDay;
 			} else {
-				sanctionedMinutesFromPartialDays = restMinutes - (14 * 60);
+				sanctionedMinutesFromPartialDays = remainingMinutes - (14 * 60);
 			}
 			int sanctionedMinutes = sanctionedMinutesFromFullDays + sanctionedMinutesFromPartialDays;
 
 			return sanctionedMinutes;
 		}
 
-		private TimeSpan CalculateRestTime (int restMinutes)
+		private DateTime CalculateRestTime (DateTime nextAvailable, int restMinutes)
 		{
-			int days = (int)Math.Floor ((double)restMinutes / 600);
-			int minutes = restMinutes - (days * 600);
+			DateTime restStart = nextAvailable;
+			DateTime restEnd;
 
-			return new TimeSpan (days, 0, minutes, 0);
+			int restingMinutesFirstDay = (int)(new DateTime (restStart.Year, restStart.Month, restStart.Day, 19, 0, 0) - restStart).TotalMinutes;
+
+			int remainingRest = restMinutes - restingMinutesFirstDay;
+
+			if (remainingRest < 0) {
+				restEnd = restStart.AddMinutes (restMinutes);
+			} else {
+				DateTime fullDaysRestStart = new DateTime (restStart.Year, restStart.Month, restStart.Day, 9, 0, 0).AddDays (1);
+				int days = (int)Math.Floor ((double)remainingRest / 600);
+				DateTime afterFullRestDays = fullDaysRestStart.AddDays (days);
+				int finalDaysRestMinutes = remainingRest - (days * 600);
+				restEnd = afterFullRestDays.AddMinutes (finalDaysRestMinutes);
+			}
+
+			return restEnd;
 		}
 
 		private void UpdateProductivity (int sanctionedMinutes, int unsanctionedMinutes)

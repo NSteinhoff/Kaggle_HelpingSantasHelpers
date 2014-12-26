@@ -66,7 +66,7 @@ namespace Kaggle_HelpingSantasHelpers
 			string startTimeString = String.Format ("{0} {1} {2} {3} {4}", this.startTime.Year, this.startTime.Month, this.startTime.Day, this.startTime.Hour, this.startTime.Minute);
 			string finalDurationString = this.finalDuration.ToString ();
 
-			string toyString = String.Format ("{0}, {1}, {2}, {3}", toyIdString, elfIdString, startTimeString, finalDurationString);
+			string toyString = String.Format ("{0},{1},{2},{3}", toyIdString, elfIdString, startTimeString, finalDurationString);
 			return toyString;
 		}
 	}

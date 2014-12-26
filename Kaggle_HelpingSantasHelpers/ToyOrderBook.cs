@@ -12,9 +12,10 @@ namespace Kaggle_HelpingSantasHelpers
 		public static List<ToyOrder> fullDayOrders;
 		public static List<ToyOrder> completedOrders;
 
-		public static int orderBracketsCount { get; set; } = 240;
+		public static int orderBracketsCount { get; set; } = 2400;
+		//240;
 
-		private static double orderBracketsQuotient {
+		public static double orderBracketsQuotient {
 			get{ return (double)MAX_ORDER_DURATION_MINUTES / (double)orderBracketsCount; } 
 		}
 

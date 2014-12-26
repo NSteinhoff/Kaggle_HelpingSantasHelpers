@@ -8,7 +8,7 @@ namespace Kaggle_HelpingSantasHelpers
 	class MainClass
 	{
 		public const int N_ELVES = 900;
-		public const int N_TOYS = 100000;
+		public const int N_TOYS = 10000000;
 
 		public static void Main (string[] args)
 		{
@@ -39,7 +39,8 @@ namespace Kaggle_HelpingSantasHelpers
 					processedOrders++;
 
 					Elf elf = ElfCommander.PickNextElf ();
-					ToyOrder toy = elf.ChooseToy ();
+					bool isQuickLearner = false;
+					ToyOrder toy = elf.ChooseToy (isQuickLearner);
 					elf.BuildToy (toy);
 
 					remainingOrders = ToyOrderBook.CountAllOrdersInBook ();
