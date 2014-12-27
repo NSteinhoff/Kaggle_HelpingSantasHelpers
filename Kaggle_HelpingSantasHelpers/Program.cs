@@ -7,8 +7,10 @@ namespace Kaggle_HelpingSantasHelpers
 {
 	class MainClass
 	{
-		public const int N_ELVES = 900;
-		public const int N_TOYS = 10000000;
+		public const int N_ELVES = 18;
+		//900;
+		public const int N_TOYS = 200000;
+		//10000000;
 
 		public static void Main (string[] args)
 		{
@@ -31,16 +33,18 @@ namespace Kaggle_HelpingSantasHelpers
 				ElfCommander.HireElves (N_ELVES);
 
 				int remainingOrders = ToyOrderBook.CountAllOrdersInBook ();
-				int processedOrders = 1;
+				int processedOrders = 0;
 				while (remainingOrders > 0) {
-					if (processedOrders % 1000 == 0) {
-						Console.WriteLine (String.Format ("Toys processed: {0}  {1}", processedOrders.ToString (), CalculateFractionComplete ().ToString ("F2")));
-					}
 					processedOrders++;
 
+					bool shouldPrint = processedOrders % 1000 == 0;
+					if (shouldPrint) {
+						PrintProgress (processedOrders);
+					}
+
 					Elf elf = ElfCommander.PickNextElf ();
-					bool isQuickLearner = false;
-					ToyOrder toy = elf.ChooseToy (isQuickLearner);
+					bool isQuickLearningMode = true;
+					ToyOrder toy = elf.ChooseToy (isQuickLearningMode);
 					elf.BuildToy (toy);
 
 					remainingOrders = ToyOrderBook.CountAllOrdersInBook ();
@@ -64,6 +68,15 @@ namespace Kaggle_HelpingSantasHelpers
 			stopwatch.Stop ();
 			Console.WriteLine (String.Format ("Elapsed Time: {0}", stopwatch.Elapsed.ToString ()));
 			Console.WriteLine ("End of program.");
+		}
+
+		private static void PrintProgress (int processedOrders)
+		{
+			Console.WriteLine (String.Format ("Toys processed: {0}  {1}", processedOrders.ToString (), CalculateFractionComplete ().ToString ("F2")));
+			Elf firstElf = ElfCommander.PickFirstElf ();
+			Console.WriteLine (String.Format ("Elf {0} productivity == {1}", firstElf.id, firstElf.productivity));
+			Elf lastElf = ElfCommander.PickLastElf ();
+			Console.WriteLine (String.Format ("Elf {0} productivity == {1}", lastElf.id, lastElf.productivity));
 		}
 
 		private static double CalculateScore ()

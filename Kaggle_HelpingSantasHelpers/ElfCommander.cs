@@ -27,6 +27,16 @@ namespace Kaggle_HelpingSantasHelpers
 		{
 			return Elves [0];
 		}
+
+		public static Elf PickFirstElf ()
+		{
+			return _elves [0];
+		}
+
+		public static Elf PickLastElf ()
+		{
+			return _elves [_elves.Count - 1];
+		}
 	}
 }
 

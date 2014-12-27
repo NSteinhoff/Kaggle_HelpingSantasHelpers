@@ -47,16 +47,7 @@ namespace Kaggle_HelpingSantasHelpers
 
 		public DateTime nextAvailable {
 			get { 
-				DateTime nextAvailable;
-				if (this.workingTill.Hour < 9) {
-					nextAvailable = new DateTime (this.workingTill.Year, this.workingTill.Month, this.workingTill.Day, 9, 0, 0);
-
-				} else if (this.workingTill.Hour >= 19) {
-					nextAvailable = (new DateTime (this.workingTill.Year, this.workingTill.Month, this.workingTill.Day, 9, 0, 0)).AddDays (1); 
-					
-				} else {
-					nextAvailable = this.workingTill;
-				}
+				DateTime nextAvailable = Hours.NextSanctionedMinute (this.workingTill);
 
 				if (this.neededRest == 0) {
 					return nextAvailable;
@@ -67,7 +58,7 @@ namespace Kaggle_HelpingSantasHelpers
 		}
 
 		private TimeSpan workTimeLeft {
-			get { return endOfSanctionedWorkday - nextAvailable; }
+			get { return Hours.TimespanLeftInWorkday (nextAvailable); }
 		}
 
 		private TimeSpan effectiveWorkTimeLeft {
@@ -78,22 +69,24 @@ namespace Kaggle_HelpingSantasHelpers
 			get{ return new DateTime (nextAvailable.Year, nextAvailable.Month, nextAvailable.Day, 19, 0, 0); }
 		}
 
-		public ToyOrder ChooseToy (bool isQuickLearnMode = false)
+		public ToyOrder ChooseToy (bool isQuickLearningMode = true)
 		{
 			ToyOrder toy = null;
 
-			DateTime nextAvailable = new DateTime (this.nextAvailable.Year, this.nextAvailable.Month, this.nextAvailable.Day, this.nextAvailable.Hour, this.nextAvailable.Minute, this.nextAvailable.Second);
+			DateTime nextAvailable = Hours.Duplicate (this.nextAvailable);
 
-			if (this.productivity == 4) {
+			bool isProductivityCappedElfAtStartOfDay = this.productivity == 4 && nextAvailable.Hour <= 9;
+
+			if (isProductivityCappedElfAtStartOfDay) {
 				toy = PickLargestAvailableToy (nextAvailable);
-			} else if (isQuickLearnMode) {
+			} else if (this.productivity < 2.5 && isQuickLearningMode) {
 				toy = PickSmallestAvailableToy (nextAvailable);
 			} else {
 				toy = PickLargestCompletableToday (nextAvailable);
 			}
-
-
-			if (toy == null) {
+				
+			bool couldNotFindSuitableToy = toy == null;
+			if (couldNotFindSuitableToy) {
 				toy = PickErliestAvailableToy ();
 			}
 
@@ -219,13 +212,18 @@ namespace Kaggle_HelpingSantasHelpers
 			} else {
 				startTime = earliestAvailableTime;
 			}
+
+			bool isLessThanFullDayToy = minutesTillFinished < 600;
+
 			DateTime endOfStartDay = new DateTime (startTime.Year, startTime.Month, startTime.Day, 19, 0, 0);
 			int minutesLeftInDay = (int)(endOfStartDay - startTime).TotalMinutes;
-			double overtimeFractionForbidden = 1 - Math.Pow (MainClass.CalculateFractionComplete (), 2);
-			if ((minutesTillFinished < 600) && ((minutesTillFinished * overtimeFractionForbidden) > minutesLeftInDay)) {
+			double overtimeFractionForbidden = 1 - Math.Pow (MainClass.CalculateFractionComplete (), 5);
+			bool isOutsideOvertimeTolerance = (minutesTillFinished * overtimeFractionForbidden) > minutesLeftInDay;
+
+			if (isLessThanFullDayToy && isOutsideOvertimeTolerance) {
 				DateTime tempTime = new DateTime (startTime.Year, startTime.Month, startTime.Day, startTime.Hour, startTime.Minute, startTime.Second);
 				startTime = (new DateTime (tempTime.Year, tempTime.Month, tempTime.Day, 9, 0, 0)).AddDays (1);
-			}
+			} 
 			return startTime;
 		}
 

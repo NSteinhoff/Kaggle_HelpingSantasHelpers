@@ -42,6 +42,7 @@
     <Compile Include="ElfCommander.cs" />
     <Compile Include="DateParser.cs" />
     <Compile Include="MoreLinq\MoreEnumerable.MaxBy.cs" />
+    <Compile Include="Hours.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
