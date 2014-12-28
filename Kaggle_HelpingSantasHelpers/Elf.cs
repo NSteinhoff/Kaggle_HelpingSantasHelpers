@@ -75,15 +75,17 @@ namespace Kaggle_HelpingSantasHelpers
 
 			DateTime nextAvailable = Hours.Duplicate (this.nextAvailable);
 
-			bool isProductivityCappedElfAtStartOfDay = this.productivity == 4 && nextAvailable.Hour <= 10;
-			bool shouldStillQuickLearn = this.productivity <= 0;
+			bool isProductivityCappedElfAtStartOfDay = this.productivity >= 3.8 && nextAvailable.Hour <= 10;
 
 			if (isProductivityCappedElfAtStartOfDay) {
 				toy = PickLargestAvailableToy (nextAvailable);
-			} else if (shouldStillQuickLearn) {
-				toy = PickSmallestAvailableToy (nextAvailable);
 			} else {
 				toy = PickLargestCompletableToday (nextAvailable);
+
+				bool isNoCompletableToyAvailable = toy == null;
+				if (isNoCompletableToyAvailable) {
+					toy = PickSmallesNonCompletableToday (nextAvailable);
+				}
 			}
 				
 			bool couldNotFindSuitableToy = toy == null;
@@ -139,6 +141,31 @@ namespace Kaggle_HelpingSantasHelpers
 			ToyOrder toy = null;
 
 			for (int i = bestBracket; i >= 0; i--) {
+				List<ToyOrder> bracket = ToyOrderBook.orderLists [i];
+
+				if (bracket.Count > 0) {
+					toy = PickAvailableToyInBracket (bracket, nextAvailable);
+				}
+
+				if (toy != null) {
+					break;
+				}
+			}
+
+			if (toy == null) {
+				toy = PickSmallestAvailableToy (nextAvailable);
+			}
+
+			return toy;
+		}
+
+		private ToyOrder PickSmallesNonCompletableToday (DateTime nextAvailable)
+		{
+			int bestBracket = (int)Math.Floor ((double)effectiveWorkTimeLeft / ToyOrderBook.orderBracketsQuotient);
+
+			ToyOrder toy = null;
+
+			for (int i = Math.Min (bestBracket + 1, ToyOrderBook.orderLists.Count - 1); i < ToyOrderBook.orderLists.Count; i++) {
 				List<ToyOrder> bracket = ToyOrderBook.orderLists [i];
 
 				if (bracket.Count > 0) {
