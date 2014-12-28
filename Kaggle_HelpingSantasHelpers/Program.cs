@@ -7,10 +7,8 @@ namespace Kaggle_HelpingSantasHelpers
 {
 	class MainClass
 	{
-		public const int N_ELVES = 18;
-		//900;
-		public const int N_TOYS = 200000;
-		//10000000;
+		public const int N_ELVES = 900;
+		public const int N_TOYS = 10000000;
 
 		public static void Main (string[] args)
 		{
@@ -43,8 +41,7 @@ namespace Kaggle_HelpingSantasHelpers
 					}
 
 					Elf elf = ElfCommander.PickNextElf ();
-					bool isQuickLearningMode = true;
-					ToyOrder toy = elf.ChooseToy (isQuickLearningMode);
+					ToyOrder toy = elf.ChooseToy ();
 					elf.BuildToy (toy);
 
 					remainingOrders = ToyOrderBook.CountAllOrdersInBook ();

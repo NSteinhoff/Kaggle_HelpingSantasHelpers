@@ -60,18 +60,13 @@ namespace Kaggle_HelpingSantasHelpersTests
 			ToyOrderBook.SetupOrderLists ();
 			ToyOrderBook.AddNewOrdersToOrderBook (orders);
 
-			bool isQuickLearnMode = false;
 			ToyOrder shouldChooseToy; 
 
-			if (isQuickLearnMode) {
-				shouldChooseToy = new ToyOrder ("1, 2014 1 1 8 0, 20");
-			} else {
-				shouldChooseToy = new ToyOrder ("5, 2014 1 1 9 0, 599");
-			}
+			shouldChooseToy = new ToyOrder ("5, 2014 1 1 8 0, 599");
 
 			Elf elf = new Elf (1);
 
-			ToyOrder chosenToy = elf.ChooseToy (isQuickLearnMode);
+			ToyOrder chosenToy = elf.ChooseToy ();
 
 			Assert.AreEqual (shouldChooseToy.iD, chosenToy.iD);
 		}
@@ -80,14 +75,15 @@ namespace Kaggle_HelpingSantasHelpersTests
 		public void ChooseToy_ToysWithDifferentDurationsAndStartTimes_PickEarliestToy ()
 		{
 			List<string> orders = new List<string> ();
-			orders.Add ("1, 2014 1 2 8 0, 20");
-			orders.Add ("2, 2014 1 3 7 0, 40");
-			orders.Add ("3, 2014 1 2 9 0, 60");
-			orders.Add ("4, 2014 1 1 12 0, 10");
+			orders.Add ("1, 2014 1 4 8 0, 20");
+			orders.Add ("2, 2014 1 5 7 0, 40");
+			orders.Add ("3, 2014 1 4 9 0, 60");
+			orders.Add ("4, 2014 1 2 9 0, 601");
+			orders.Add ("5, 2014 1 2 12 0, 600");
 			ToyOrderBook.SetupOrderLists ();
 			ToyOrderBook.AddNewOrdersToOrderBook (orders);
 
-			ToyOrder shouldChooseToy = new ToyOrder ("4, 2014 1 1 12 0, 10");
+			ToyOrder shouldChooseToy = new ToyOrder ("5, 2014 1 2 12 0, 600");
 
 			Elf elf = new Elf (1);
 

@@ -60,9 +60,7 @@ namespace Kaggle_HelpingSantasHelpersTests
 		[TestCase (23, 0, 0)]
 		public void MinutesLeftInWorkday_DifferentTimes_ReturnCorrectNumber (int hour, int minute, int expectedMinutes)
 		{
-			DateTime testTime = new DateTime (2014, 3, 11, hour, minute, 0);
-
-			int actualMinutes = Hours.MinutesLeftInWorkday (testTime);
+			int actualMinutes = Hours.MinutesLeftInWorkday (new DateTime (2014, 3, 11, hour, minute, 0));
 
 			Assert.AreEqual (expectedMinutes, actualMinutes, TestContext.CurrentContext.Test.Name);
 		}
@@ -85,6 +83,20 @@ namespace Kaggle_HelpingSantasHelpersTests
 			Assert.AreEqual (expectedTime, actualTime, TestContext.CurrentContext.Test.Name);
 		}
 
+		[TestCase (1, 0, 600)]
+		[TestCase (8, 59, 600)]
+		[TestCase (9, 1, 599)]
+		[TestCase (18, 1, 59)]
+		[TestCase (18, 59, 1)]
+		[TestCase (23, 0, 0)]
+		public void TimespanLeftInWorkday_Differenttime_ReturnCorrectTime (int hour, int minute, int expectedMinutes)
+		{
+			TimeSpan actualTimespan = Hours.TimespanLeftInWorkday (new DateTime (2014, 1, 1, hour, minute, 0));
+
+			TimeSpan expectedTimespan = new TimeSpan (0, expectedMinutes, 0);
+
+			Assert.AreEqual (expectedTimespan, actualTimespan, TestContext.CurrentContext.Test.Name);
+		}
 	}
 }
 
