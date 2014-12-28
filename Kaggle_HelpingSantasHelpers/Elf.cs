@@ -275,7 +275,7 @@ namespace Kaggle_HelpingSantasHelpers
 			bool isLessThanFullDayToy = minutesTillFinished < 600;
 
 			int minutesLeftInDay = Hours.MinutesLeftInWorkday (startTime);
-			double overtimeFractionForbidden = 1 - Math.Pow (MainClass.CalculateFractionComplete (), 5);
+			double overtimeFractionForbidden = 1 - Math.Min (Math.Pow (MainClass.CalculateFractionComplete (), 5), 0.15);
 			bool isOutsideOvertimeTolerance = (minutesTillFinished * overtimeFractionForbidden) > minutesLeftInDay;
 
 			if (isLessThanFullDayToy && isOutsideOvertimeTolerance) {
