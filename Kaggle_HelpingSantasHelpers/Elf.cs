@@ -75,21 +75,18 @@ namespace Kaggle_HelpingSantasHelpers
 
 			DateTime nextAvailable = Hours.Duplicate (this.nextAvailable);
 
-			bool isProductivityCappedElfAtStartOfDay = this.productivity >= 3.8 && nextAvailable.Hour <= 10;
+			double highSkilledCutoff = 3.8;
+			bool isProductivityCappedElfAtStartOfDay = this.productivity >= highSkilledCutoff && nextAvailable.Hour <= 12;
 
 			if (isProductivityCappedElfAtStartOfDay) {
 				toy = PickLargestAvailableToy (nextAvailable);
+			} else if (this.productivity < highSkilledCutoff) {
+				toy = PickSmallestAvailableToy (nextAvailable);
 			} else {
 				toy = PickLargestCompletableToday (nextAvailable);
-
-				bool isNoCompletableToyAvailable = toy == null;
-				if (isNoCompletableToyAvailable) {
-					toy = PickSmallesNonCompletableToday (nextAvailable);
-				}
 			}
 				
-			bool couldNotFindSuitableToy = toy == null;
-			if (couldNotFindSuitableToy) {
+			if (toy == null) {
 				toy = PickErliestAvailableToy ();
 			}
 
@@ -159,31 +156,6 @@ namespace Kaggle_HelpingSantasHelpers
 			return toy;
 		}
 
-		private ToyOrder PickSmallesNonCompletableToday (DateTime nextAvailable)
-		{
-			int bestBracket = (int)Math.Floor ((double)effectiveWorkTimeLeft / ToyOrderBook.orderBracketsQuotient);
-
-			ToyOrder toy = null;
-
-			for (int i = Math.Min (bestBracket + 1, ToyOrderBook.orderLists.Count - 1); i < ToyOrderBook.orderLists.Count; i++) {
-				List<ToyOrder> bracket = ToyOrderBook.orderLists [i];
-
-				if (bracket.Count > 0) {
-					toy = PickAvailableToyInBracket (bracket, nextAvailable);
-				}
-
-				if (toy != null) {
-					break;
-				}
-			}
-
-			if (toy == null) {
-				toy = PickSmallestAvailableToy (nextAvailable);
-			}
-
-			return toy;
-		}
-
 		private ToyOrder PickAvailableToyInBracket (List<ToyOrder> bracket, DateTime nextAvailable)
 		{
 			ToyOrder toy = null;
@@ -201,9 +173,7 @@ namespace Kaggle_HelpingSantasHelpers
 			List<ToyOrder> earliestToysInSuperDayBrackets = new List<ToyOrder> ();
 
 			for (int i = 0; i <= Math.Min (effectiveWorkTimeLeft, ToyOrderBook.orderBracketsCount - 1); i++) {
-
 				List<ToyOrder> bracket = ToyOrderBook.orderLists [i];
-
 				if (bracket.Count > 0) {
 					earliestToysInSubDayBrackets.Add (bracket [0]);
 				}
@@ -226,15 +196,11 @@ namespace Kaggle_HelpingSantasHelpers
 				earliestSuperDayToy = earliestToysInSuperDayBrackets.OrderBy (x => x.arrivalTime).ToList () [0];
 			}
 
-			bool noSubDayToy = earliestSubDayToy == null;
-			bool noSuperDayToy = earliestSuperDayToy == null;
-			bool subDayMoreThanDayLater = (earliestSubDayToy.arrivalTime - earliestSuperDayToy.arrivalTime).TotalDays > 1;
-
-			if (noSubDayToy) {
+			if (earliestSubDayToy == null) {
 				toy = earliestSuperDayToy;
-			} else if (noSuperDayToy) {
+			} else if (earliestSuperDayToy == null) {
 				toy = earliestSubDayToy;
-			} else if (subDayMoreThanDayLater) {
+			} else if ((earliestSubDayToy.arrivalTime - earliestSuperDayToy.arrivalTime).TotalDays > 1) {
 				toy = earliestSuperDayToy;
 			} else {
 				toy = earliestSubDayToy;

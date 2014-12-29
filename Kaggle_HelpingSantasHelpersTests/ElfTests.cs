@@ -62,7 +62,7 @@ namespace Kaggle_HelpingSantasHelpersTests
 
 			ToyOrder shouldChooseToy; 
 
-			shouldChooseToy = new ToyOrder ("5, 2014 1 1 8 0, 599");
+			shouldChooseToy = new ToyOrder ("1, 2014 1 1 8 0, 20");
 
 			Elf elf = new Elf (1);
 

@@ -24,8 +24,7 @@ namespace Kaggle_HelpingSantasHelpers
 
 				DataReader.OpenReadStream (DataReader.filePath);
 				Console.WriteLine (DataReader.ReadHeaderLine ());
-				List<string> incomingOrders = DataReader.ReadLinesFromStream (N_TOYS);
-				ToyOrderBook.AddNewOrdersToOrderBook (incomingOrders);
+				ToyOrderBook.AddNewOrdersToOrderBook (DataReader.ReadLinesFromStream (N_TOYS));
 				DataReader.CloseReadStream ();
 
 				ElfCommander.HireElves (N_ELVES);
