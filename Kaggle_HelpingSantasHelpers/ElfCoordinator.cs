@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Kaggle_HelpingSantasHelpers
 {
-	public static class ElfCommander
+	public static class ElfCoordinator
 	{
 		private static List<Elf> _elves = new List<Elf> ();
 

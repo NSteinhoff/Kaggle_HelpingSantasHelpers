@@ -39,10 +39,10 @@
     <Compile Include="ToyOrderBook.cs" />
     <Compile Include="ToyOrder.cs" />
     <Compile Include="Elf.cs" />
-    <Compile Include="ElfCommander.cs" />
     <Compile Include="DateParser.cs" />
     <Compile Include="MoreLinq\MoreEnumerable.MaxBy.cs" />
     <Compile Include="Hours.cs" />
+    <Compile Include="ElfCoordinator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

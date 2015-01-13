@@ -27,7 +27,7 @@ namespace Kaggle_HelpingSantasHelpers
 				ToyOrderBook.AddNewOrdersToOrderBook (DataReader.ReadLinesFromStream (N_TOYS));
 				DataReader.CloseReadStream ();
 
-				ElfCommander.HireElves (N_ELVES);
+				ElfCoordinator.HireElves (N_ELVES);
 
 				int remainingOrders = ToyOrderBook.CountAllOrdersInBook ();
 				int processedOrders = 0;
@@ -39,7 +39,7 @@ namespace Kaggle_HelpingSantasHelpers
 						PrintProgress (processedOrders);
 					}
 
-					Elf elf = ElfCommander.PickNextElf ();
+					Elf elf = ElfCoordinator.PickNextElf ();
 					ToyOrder toy = elf.ChooseToy ();
 					elf.BuildToy (toy);
 
@@ -69,9 +69,9 @@ namespace Kaggle_HelpingSantasHelpers
 		private static void PrintProgress (int processedOrders)
 		{
 			Console.WriteLine (String.Format ("Toys processed: {0}  {1}", processedOrders.ToString (), CalculateFractionComplete ().ToString ("F2")));
-			Elf firstElf = ElfCommander.PickFirstElf ();
+			Elf firstElf = ElfCoordinator.PickFirstElf ();
 			Console.WriteLine (String.Format ("Elf {0} productivity == {1}", firstElf.id, firstElf.productivity));
-			Elf lastElf = ElfCommander.PickLastElf ();
+			Elf lastElf = ElfCoordinator.PickLastElf ();
 			Console.WriteLine (String.Format ("Elf {0} productivity == {1}", lastElf.id, lastElf.productivity));
 		}
 
